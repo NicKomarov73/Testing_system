@@ -3,7 +3,8 @@ from tkinter import *
 que_list = [
     "какойто первый вопрос",
     "какойто второй вопрос",
-    "какойто третий вопрос"
+    "Однажды бард Лютик признался Геральту, какой предмет был его любимым, когда он учился в Оксенфуртской академии, и почему. Вспомните?",
+    "какойто четвертый вопрос"
 ]
 
 def back(task_num):
@@ -12,15 +13,15 @@ def back(task_num):
     global btn_next
     global btn_fin_test
 
-    if task_num + 2 != len(que_list):
-        btn_fin_test.pack_forget()
+    btn_next.pack_forget()
+    btn_back.pack_forget()
 
     que_label.config(text = que_list[task_num-1])
-    btn_back = Button(task_fr, text='back', command=lambda: back(task_num - 1))
-    btn_next = Button(task_fr, text='next', command=lambda: forward(task_num - 1))
+    btn_back = Button(mini_menu_fr, text='back', command=lambda: back(task_num - 1))
+    btn_next = Button(mini_menu_fr, text='next', command=lambda: forward(task_num - 1))
 
-    btn_back.place(relx=.1, rely=.9)
-    btn_next.place(relx=.9, rely=.9)
+    btn_next.pack(side=RIGHT)
+    btn_back.pack(side=RIGHT)
 
     if task_num - 1 == 0:
         btn_back.config(state=DISABLED)
@@ -33,16 +34,18 @@ def forward(task_num):
     global btn_next
     global btn_fin_test
 
+    btn_next.pack_forget()
+    btn_back.pack_forget()
+
     que_label.config(text=que_list[task_num + 1])
-    btn_back = Button(task_fr, text='back', command=lambda: back(task_num + 1))
-    btn_next = Button(task_fr, text='next', command=lambda: forward(task_num + 1))
+    btn_back = Button(mini_menu_fr, text='back', command=lambda: back(task_num + 1))
+    btn_next = Button(mini_menu_fr, text='next', command=lambda: forward(task_num + 1))
 
     if task_num + 2 == len(que_list):
         btn_next.config(state=DISABLED)
-        btn_fin_test.pack(side=RIGHT )
 
-    btn_back.place(relx=.1, rely=.9)
-    btn_next.place(relx=.9, rely=.9)
+    btn_next.pack(side=RIGHT)
+    btn_back.pack(side=RIGHT)
 
     return
 
@@ -55,39 +58,62 @@ def to_test():
 # -------------creating window------------------
 window = Tk()
 window.title("Testing system")
-window.geometry('700x900')
-window.resizable(False, False)
+window.geometry('500x700')
+window.update()
+#window.resizable(False, False)
 
 
 # -------------creating start menu------------------
 main_fr = Frame(window, bg='grey')
-main_fr.pack(fill = BOTH, expand = 1)
+main_fr.pack(expand = 1)
 
 # creating buttons on start menu
 st_btn = Button(main_fr, text='Start', bg='blue', fg='white', width=15, height=3, command = to_test)
-st_btn.pack(anchor = CENTER)
+st_btn.pack(expand=1, side=TOP)
 
 sett_btn = Button(main_fr, text='Settings', bg='blue', fg='white', width=15, height=3)
-sett_btn.pack()
+sett_btn.pack(side=TOP)
 
 info_btn = Button(main_fr, text='Info', bg='blue', fg='white', width=15, height=3)
-info_btn.pack()
+info_btn.pack(side=TOP)
 
 exit_btn = Button(main_fr, text='Exit', bg='blue', fg='white', width=15, height=3,  command=window.quit)
-exit_btn.pack()
+exit_btn.pack(side=TOP)
 
 
 # -------------creating tasks frame------------------
 task_fr = Frame(window, bg = 'grey')
 
-que_label = Label(task_fr, text=que_list[0], justify = CENTER)
+quest_fr = Frame(task_fr)
+quest_fr.pack(side=TOP, fill='x', padx = 10)
+quest_fr.config(bg = 'black')
+
+que_label = Message(quest_fr, text=que_list[0], justify = CENTER, width = window.winfo_width() - 20)
 que_label.pack(side=TOP, pady=10, padx=14, fill='x')
+que_label.bind("<Configure>", lambda e: que_label.configure(width=e.width-10))
 
-btn_back = Button(task_fr, text='back', state = DISABLED, command = lambda: back(0))
-btn_next = Button(task_fr, text='next', command = lambda: forward(0))
-btn_fin_test = Button(task_fr, text='Finish test')
+ans_fr = Frame(task_fr)
+ans_fr.pack(side=TOP, fill=BOTH, padx = 10, expand=1)
+ans_fr.config(bg='red')
 
-btn_back.place(relx=.1, rely=.9)
-btn_next.place(relx=.9, rely=.9)
+ans = Listbox(ans_fr)
+ans.pack(expand=1)
+
+
+mini_menu_fr = Frame(task_fr)
+mini_menu_fr.pack(side=BOTTOM, fill='x', padx = 10)
+mini_menu_fr.config(bg='black')
+
+btn_back = Button(mini_menu_fr, text='back', state = DISABLED, command = lambda: back(0))
+btn_next = Button(mini_menu_fr, text='next', command = lambda: forward(0))
+btn_fin_test = Button(mini_menu_fr, text='Finish test')
+btn_exit = Button(mini_menu_fr, text='Exit', command=window.quit)
+
+btn_exit.pack(side=LEFT)
+btn_fin_test.pack(side=LEFT)
+btn_next.pack(side=RIGHT)
+btn_back.pack(side=RIGHT)
+
+
 
 window.mainloop()
