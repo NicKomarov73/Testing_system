@@ -1,11 +1,8 @@
 from tkinter import *
 
-que_list = [
-    "какойто первый вопрос",
-    "какойто второй вопрос",
-    "Однажды бард Лютик признался Геральту, какой предмет был его любимым, когда он учился в Оксенфуртской академии, и почему. Вспомните?",
-    "какойто четвертый вопрос"
-]
+que_list = []
+ans_list = []
+correct_ans_list = []
 
 def back(task_num):
     global que_label
@@ -54,6 +51,27 @@ def to_test():
     task_fr.pack(fill = BOTH, expand = 1)
 
 
+# -------------read file------------------
+test_lines = open("test/my_test.txt").readlines()
+
+i = 0
+while i < len(test_lines):
+    question = test_lines[i]
+    question = question[0:len(question)-4]
+    que_list.append(question)
+
+    while test_lines[i] != "(end)\n":
+        i += 1
+        answer = test_lines[i]
+
+        if answer[len(answer)-4:] == "(+)\n":
+            answer = answer[0:len(answer)-4]
+            correct_ans_list.append(answer)
+        else:
+            answer = answer[0:len(answer) - 1]
+        if answer != "(end)":
+            ans_list.append(answer)
+    i += 1
 
 # -------------creating window------------------
 window = Tk()
