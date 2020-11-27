@@ -6,6 +6,7 @@ ans_list = {}
 correct_ans_list = {}
 user_ans = {}
 finale_score = 0
+btn_color = '#CFECEC'
 
 def forward(task_num):
     global que_label
@@ -26,9 +27,9 @@ def forward(task_num):
     ans.config(height=len(ans_list[que_list[task_num + 1]]))
 
     que_label.config(text=que_list[task_num + 1])
-    btn_next = Button(mini_menu_fr, text='next', command=lambda: forward(task_num + 1), bg='blue', fg='white', width=12, height=2)
+    btn_next = Button(mini_menu_fr, text='next', command=lambda: forward(task_num + 1), bg=btn_color, fg='black', width=12, height=2)
     status_bar = Label(mini_menu_fr, text="     task " + str(task_num+2) + " of " + str(len(que_list)),
-                       height=2, bg='black', fg='white', anchor=W)
+                       height=2, bg="#ADD8E6", fg='#0C090A', anchor=W)
 
     if ans_var.get():
         random.shuffle(ans_list[que_list[task_num + 1]])
@@ -152,30 +153,30 @@ while i < len(test_lines):
 # -------------creating window------------------
 window = Tk()
 window.title("Testing system")
-window.geometry('500x700')
+window.geometry('500x500')
 window.update()
 my_icon = PhotoImage(file='test/test_sys_icon.png')
 window.iconphoto(False, my_icon)
 
 
 # -------------creating start menu------------------
-window_fr = Frame(window, bg='black')
+window_fr = Frame(window, bg="#ADD8E6")
 window_fr.pack(fill=BOTH, expand=1)
 
 main_fr = Frame(window_fr, bg='grey')
 main_fr.pack(expand = 1)
 
 # creating buttons on start menu
-st_btn = Button(main_fr, text='Start', bg='blue', fg='white', width=15, height=3, command = to_test)
+st_btn = Button(main_fr, text='Start', bg=btn_color, fg='black', width=15, height=3, command = to_test)
 st_btn.pack(expand=1, side=TOP)
 
-sett_btn = Button(main_fr, text='Settings', bg='blue', fg='white', width=15, height=3, command=to_sett)
+sett_btn = Button(main_fr, text='Settings', bg=btn_color, fg='black', width=15, height=3, command=to_sett)
 sett_btn.pack(side=TOP)
 
-info_btn = Button(main_fr, text='Info', bg='blue', fg='white', width=15, height=3)
+info_btn = Button(main_fr, text='Info', bg=btn_color, fg='black', width=15, height=3)
 info_btn.pack(side=TOP)
 
-exit_btn = Button(main_fr, text='Exit', bg='blue', fg='white', width=15, height=3,  command=window.quit)
+exit_btn = Button(main_fr, text='Exit', bg=btn_color, fg='black', width=15, height=3,  command=window.quit)
 exit_btn.pack(side=TOP)
 
 # -------------creating settings frame------------------
@@ -184,26 +185,26 @@ ans_var = BooleanVar()
 random_que_btn = Checkbutton(main_fr, text="Change questions order?", variable=que_var, onvalue=True, offvalue=False, font =('Times', 20))
 random_ans_btn = Checkbutton(main_fr, text="Change answers order?  ", variable=ans_var, onvalue=True, offvalue=False, font =('Times', 20))
 
-menu_btn = Button(window_fr, text='Menu', bg='blue', fg='white', width=15, height=3, command=to_menu)
+menu_btn = Button(window_fr, text='Menu', bg=btn_color, fg='black', width=15, height=3, command=to_menu)
 
 
 # -------------creating tasks frame------------------
-task_fr = Frame(window, bg = 'black')
+task_fr = Frame(window, bg = "#ADD8E6")
 
 quest_fr = Frame(task_fr)
 quest_fr.pack(side=TOP, fill='x', padx = 10)
-quest_fr.config(bg = 'black')
+quest_fr.config(bg = "#ADD8E6")
 
-que_label = Message(quest_fr, text=que_list[0], justify = CENTER, width = window.winfo_width() - 14, bg='black', fg='blue', font =('Times', 20))
+que_label = Message(quest_fr, text=que_list[0], justify = CENTER, width = window.winfo_width() - 14, bg="#ADD8E6", fg="#0C090A", font =('Times', 20))
 que_label.pack(side=TOP, pady=10, fill='x')
 que_label.bind("<Configure>", lambda e: que_label.configure(width=e.width-10))
 
 ans_fr = Frame(task_fr)
 ans_fr.pack(side=TOP, fill=BOTH, expand=1)
-ans_fr.config(bg='black')
+ans_fr.config(bg="#ADD8E6")
 
-ans = Listbox(ans_fr, height=len(ans_list[que_list[0]]), width=window.winfo_width(), justify=CENTER, font=('Times', 17),
-              activestyle='dotbox', selectmode='single', bg='black', fg='blue', highlightbackground='black')
+ans = Listbox(ans_fr, height=len(ans_list[que_list[0]]), width=window.winfo_width(), font=('Times', 17),
+              activestyle='dotbox', selectmode='single', bg="#ADD8E6", fg="#0C090A", highlightbackground="#ADD8E6")
 ans.pack(side=TOP)
 
 for j in ans_list[que_list[0]]:
@@ -212,14 +213,14 @@ for j in ans_list[que_list[0]]:
 if len(correct_ans_list[que_list[0]]) != 1:
     ans.config(selectmode='multiple')
 
-mini_menu_fr = Frame(task_fr, bg='black')
+mini_menu_fr = Frame(task_fr, bg="#ADD8E6")
 mini_menu_fr.pack(side=BOTTOM, fill='x')
 
-btn_next = Button(mini_menu_fr, text='next', command = lambda: forward(0), bg='blue', fg='white', width=12, height=2)
-btn_fin_test = Button(mini_menu_fr, text='Finish test', command=fin_test, bg='blue', fg='white', width=12, height=2)
-btn_exit = Button(mini_menu_fr, text='Exit', command=window.quit, bg='blue', fg='white', width=12, height=2)
+btn_next = Button(mini_menu_fr, text='next', command = lambda: forward(0), bg=btn_color, fg='black', width=12, height=2)
+btn_fin_test = Button(mini_menu_fr, text='Finish test', command=fin_test, bg=btn_color, fg='black', width=12, height=2)
+btn_exit = Button(mini_menu_fr, text='Exit', command=window.quit, bg=btn_color, fg='black', width=12, height=2)
 
-status_bar = Label(mini_menu_fr, text="     task 1 of " + str(len(que_list)), height=2, bg='black', fg='white', anchor=W)
+status_bar = Label(mini_menu_fr, text="     task 1 of " + str(len(que_list)), height=2, bg="#ADD8E6", fg='#0C090A', anchor=W)
 
 btn_exit.pack(side=LEFT)
 btn_fin_test.pack(side=LEFT)
@@ -228,13 +229,12 @@ status_bar.pack(side=LEFT)
 
 
 # -------------creating score frame------------------
-score_fr = Frame(window, bg = 'black')
-result_label = Label(score_fr, font =('Times', 30), text="You scored " + str(finale_score) + '/' + str(len(que_list)) + "!", bg='black', fg='blue')
+score_fr = Frame(window, bg = "#ADD8E6")
+result_label = Label(score_fr, font =('Times', 30), text="You scored " + str(finale_score) + '/' + str(len(que_list)) + "!", bg="#ADD8E6", fg="#0C090A")
 result_label.pack(side=TOP)
 
-fin_test_img = PhotoImage(file='test/finish_test.png')
+fin_test_img = PhotoImage(file='test/test-passed.png')
 img_label = Label(score_fr, image=fin_test_img)
-img_label.pack(expand=1)
-
+img_label.pack(side=TOP)
 
 window.mainloop()
