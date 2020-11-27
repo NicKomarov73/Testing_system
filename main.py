@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 
 que_list = []
 ans_list = {}
@@ -28,6 +29,9 @@ def forward(task_num):
     btn_next = Button(mini_menu_fr, text='next', command=lambda: forward(task_num + 1), bg='blue', fg='white', width=12, height=2)
     status_bar = Label(mini_menu_fr, text="     task " + str(task_num+2) + " of " + str(len(que_list)),
                        height=2, bg='black', fg='white', anchor=W)
+
+    if ans_var.get():
+        random.shuffle(ans_list[que_list[task_num + 1]])
 
     for k in ans_list[que_list[task_num + 1]]:
         ans.insert(END, k)
@@ -80,10 +84,45 @@ def fin_test():
 
 def to_test():
     global user_ans
+    global que_rand
+    global ans_rand
+    global que_list
+
     main_fr.pack_forget()
     window_fr.pack_forget()
     task_fr.pack(fill = BOTH, expand = 1)
+
+    if que_var.get():
+        temp = que_list[1:]
+        random.shuffle(temp)
+        temp2 = que_list[0]
+        que_list = []
+        que_list.append(temp2)
+        que_list += temp
+
     user_ans = dict.fromkeys(que_list)
+
+def to_sett():
+    global st_btn, sett_btn, info_btn, exit_btn,random_que_btn, random_ans_btn, menu_btn
+
+    st_btn.pack_forget()
+    sett_btn.pack_forget()
+    info_btn.pack_forget()
+    exit_btn.pack_forget()
+    random_que_btn.pack()
+    random_ans_btn.pack()
+    menu_btn.pack()
+
+def to_menu():
+    global st_btn, sett_btn, info_btn, exit_btn, random_que_btn, random_ans_btn, menu_btn
+
+    random_que_btn.pack_forget()
+    random_ans_btn.pack_forget()
+    menu_btn.pack_forget()
+    st_btn.pack(expand=1, side=TOP)
+    sett_btn.pack(side=TOP)
+    info_btn.pack(side=TOP)
+    exit_btn.pack(side=TOP)
 
 
 # -------------read file------------------
@@ -130,7 +169,7 @@ main_fr.pack(expand = 1)
 st_btn = Button(main_fr, text='Start', bg='blue', fg='white', width=15, height=3, command = to_test)
 st_btn.pack(expand=1, side=TOP)
 
-sett_btn = Button(main_fr, text='Settings', bg='blue', fg='white', width=15, height=3)
+sett_btn = Button(main_fr, text='Settings', bg='blue', fg='white', width=15, height=3, command=to_sett)
 sett_btn.pack(side=TOP)
 
 info_btn = Button(main_fr, text='Info', bg='blue', fg='white', width=15, height=3)
@@ -138,6 +177,14 @@ info_btn.pack(side=TOP)
 
 exit_btn = Button(main_fr, text='Exit', bg='blue', fg='white', width=15, height=3,  command=window.quit)
 exit_btn.pack(side=TOP)
+
+# -------------creating settings frame------------------
+que_var = BooleanVar()
+ans_var = BooleanVar()
+random_que_btn = Checkbutton(main_fr, text="Change questions order?", variable=que_var, onvalue=True, offvalue=False, font =('Times', 20))
+random_ans_btn = Checkbutton(main_fr, text="Change answers order?  ", variable=ans_var, onvalue=True, offvalue=False, font =('Times', 20))
+
+menu_btn = Button(window_fr, text='Menu', bg='blue', fg='white', width=15, height=3, command=to_menu)
 
 
 # -------------creating tasks frame------------------
